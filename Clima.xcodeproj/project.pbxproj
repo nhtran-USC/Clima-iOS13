@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,8 @@
 		449D412928601F1100B1D83A /* Clouds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449D412828601F1100B1D83A /* Clouds.swift */; };
 		449D412B28601F2000B1D83A /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449D412A28601F2000B1D83A /* System.swift */; };
 		449D412D286022D300B1D83A /* WeatherInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449D412C286022D300B1D83A /* WeatherInfo.swift */; };
+		449D413028613F2800B1D83A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 449D412F28613F2800B1D83A /* Kingfisher */; };
+		449D41322861426400B1D83A /* WeatherInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449D41312861426400B1D83A /* WeatherInfoService.swift */; };
 		ADAA27B1231BBFAF00365194 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAA27B0231BBFAF00365194 /* AppDelegate.swift */; };
 		ADAA27B3231BBFAF00365194 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAA27B2231BBFAF00365194 /* SceneDelegate.swift */; };
 		ADAA27B5231BBFAF00365194 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADAA27B4231BBFAF00365194 /* WeatherViewController.swift */; };
@@ -33,6 +35,7 @@
 		449D412828601F1100B1D83A /* Clouds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clouds.swift; sourceTree = "<group>"; };
 		449D412A28601F2000B1D83A /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
 		449D412C286022D300B1D83A /* WeatherInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfo.swift; sourceTree = "<group>"; };
+		449D41312861426400B1D83A /* WeatherInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoService.swift; sourceTree = "<group>"; };
 		ADAA27AD231BBFAF00365194 /* Clima.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clima.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADAA27B0231BBFAF00365194 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADAA27B2231BBFAF00365194 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				449D413028613F2800B1D83A /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +64,7 @@
 		449D412128601EAD00B1D83A /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				449D41312861426400B1D83A /* WeatherInfoService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -145,6 +150,9 @@
 			dependencies = (
 			);
 			name = Clima;
+			packageProductDependencies = (
+				449D412F28613F2800B1D83A /* Kingfisher */,
+			);
 			productName = Clima;
 			productReference = ADAA27AD231BBFAF00365194 /* Clima.app */;
 			productType = "com.apple.product-type.application";
@@ -173,6 +181,9 @@
 				Base,
 			);
 			mainGroup = ADAA27A4231BBFAF00365194;
+			packageReferences = (
+				449D412E28613F2800B1D83A /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = ADAA27AE231BBFAF00365194 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -208,6 +219,7 @@
 				ADAA27B5231BBFAF00365194 /* WeatherViewController.swift in Sources */,
 				449D412728601EFF00B1D83A /* Wind.swift in Sources */,
 				ADAA27B1231BBFAF00365194 /* AppDelegate.swift in Sources */,
+				449D41322861426400B1D83A /* WeatherInfoService.swift in Sources */,
 				ADAA27B3231BBFAF00365194 /* SceneDelegate.swift in Sources */,
 				449D412028601EA300B1D83A /* Coordinate.swift in Sources */,
 				449D412B28601F2000B1D83A /* System.swift in Sources */,
@@ -408,6 +420,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		449D412E28613F2800B1D83A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		449D412F28613F2800B1D83A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 449D412E28613F2800B1D83A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ADAA27A5231BBFAF00365194 /* Project object */;
 }

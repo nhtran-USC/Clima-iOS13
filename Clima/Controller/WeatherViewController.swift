@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Kingfisher
 
 class WeatherViewController: UIViewController, UITextFieldDelegate{
 
@@ -16,6 +17,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var cityTextField: UITextField!
     let locManager = CLLocationManager()
+    let BASE_URL = "https://api.openweathermap.org/"
+    let ACCESS_KEY = "c971dcfa039a769ffb82756277095d03"
+    let unit = "metric"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +34,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     
     @IBAction func locationButtonDidTap(_ sender: Any) {
         // end editting and turn off keyboard
-        cityTextField.text = nil
-        view.endEditing(true)
+//        cityTextField.text = nil
+//        view.endEditing(true)
+        
         var currentLocation: CLLocation!
         if
            CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
@@ -40,33 +45,68 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
             currentLocation = locManager.location
             let long = currentLocation.coordinate.longitude
             let lat = currentLocation.coordinate.latitude
-            let BASE_URL = "https://api.openweathermap.org/"
-            let ACCESS_KEY = "c971dcfa039a769ffb82756277095d03"
-            if let url = URL(string: "\(BASE_URL)data/2.5/weather?lat=\(lat)&lon=\(long)&appid=\(ACCESS_KEY)") {
-                    let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                        if let error = error {
-                            fatalError(error.localizedDescription)
-                        }
-                        guard let httpResponse = response as? HTTPURLResponse,
-                            (200...299).contains(httpResponse.statusCode) else {
-//                            self.handleServerError(response)
-                                // how to pass error in this case
-                            return
-                        }
-                        if let data = data {
-//                            let string = String(data: data, encoding: .utf8)
-                            let decoder = JSONDecoder()
-                            let weatherInfo = try! decoder.decode(WeatherInfo.self, from: data)
-                            self.temperatureLabel.text = String(weatherInfo.main.temp)
-                        }
-                        else  {
-                            fatalError("no data")
-                        }
-                }
-                task.resume()
-            }
+            updateWeatherInfo(long: long, lat: lat)
         }
     }
+    func updateWeatherInfo(cityName: String) {
+        if let url = URL(string: "\(BASE_URL)data/2.5/weather?q=\(cityName)&appid=\(ACCESS_KEY)&units=\(unit)") {
+                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    if let error = error {
+                        fatalError(error.localizedDescription)
+                    }
+                    
+                    if let data = data {
+                        self.dataToView(data: data)
+                    }
+                    else  {
+                        fatalError("no data")
+                    }
+            }
+            task.resume()
+        }
+    }
+    
+    func updateWeatherInfo(long:CLLocationDegrees, lat:CLLocationDegrees) {
+        if let url = URL(string: "\(BASE_URL)data/2.5/weather?lat=\(lat)&lon=\(long)&appid=\(ACCESS_KEY)&units=\(unit)") {
+                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    if let error = error {
+                        fatalError(error.localizedDescription)
+                    }
+                    
+                    
+                    if let data = data {
+                        self.dataToView(data: data)
+                    }
+                    else  {
+                        fatalError("no data")
+                    }
+            }
+            task.resume()
+        }
+    }
+    
+    func dataToView(data: Data) {
+        let decoder = JSONDecoder()
+        do{
+            try WeatherInfoService.share.weatherInfo = decoder.decode(WeatherInfo.self, from: data)
+            DispatchQueue.main.async { [self] in
+                self.temperatureLabel.text = String(WeatherInfoService.share.getTemperature()!)
+                let imgUrl = WeatherInfoService.share.getWeatherIconUrl()!
+                self.conditionImageView.kf.setImage(with: imgUrl)
+                self.cityLabel.text = WeatherInfoService.share.getCityName()!
+            }
+        }
+        catch {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Location Not Found", message: "Please try again.", preferredStyle: UIAlertController.Style.alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+
+    }
+    
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -77,10 +117,8 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     }
     
     @IBAction func CityTextfieldDidEnd(_ sender: UITextField) {
-        if let cityName = cityTextField.text{
-            if(!cityName.isEmpty) {
-                print(cityName)
-            }
+        if let cityName = cityTextField.text, cityName != ""{
+            updateWeatherInfo(cityName: cityName)
         }
     }
     
