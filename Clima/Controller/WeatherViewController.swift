@@ -16,6 +16,8 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var cityTextField: UITextField!
+    @IBOutlet weak var usingMapButton: UIButton!
+    
     let locManager = CLLocationManager()
     let BASE_URL = "https://api.openweathermap.org/"
     let ACCESS_KEY = "c971dcfa039a769ffb82756277095d03"
@@ -30,6 +32,8 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
         // ask for location authorization
         locManager.requestWhenInUseAuthorization()
         
+        // using map button init
+        usingMapButton.layer.cornerRadius = usingMapButton.frame.height / 2
     }
     
     @IBAction func locationButtonDidTap(_ sender: Any) {
@@ -48,6 +52,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
             updateWeatherInfo(long: long, lat: lat)
         }
     }
+    
     func updateWeatherInfo(cityName: String) {
         if let url = URL(string: "\(BASE_URL)data/2.5/weather?q=\(cityName)&appid=\(ACCESS_KEY)&units=\(unit)") {
                 let task = URLSession.shared.dataTask(with: url) { data, response, error in
